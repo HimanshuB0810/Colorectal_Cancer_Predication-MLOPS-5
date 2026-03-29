@@ -8,7 +8,6 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, OneHotEncoder, LabelEncoder, OrdinalEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import RandomForestClassifier
-from xgboost import XGBClassifier
 import joblib
 
 logger=get_logger(__name__)
@@ -293,7 +292,13 @@ class DataProcessing:
 
 if __name__=="__main__":
     input_path = "artifacts/raw/data.csv"
-    output_path = "artifacts/processed"
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output_path", type=str)
+    args = parser.parse_args()
+
+    output_path = args.output_path
 
     processor = DataProcessing(input_path,output_path)
     processor.run()

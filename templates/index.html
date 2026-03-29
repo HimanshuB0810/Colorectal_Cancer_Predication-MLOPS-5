@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cancer Data Input Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/styles.css" />
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <div class="container">                               
+
+    <header class="header">
+      <div class="header-badge">MEDICAL DATA SYSTEM</div>
+      <h1 class="header-title">Colorectal Cancer Predication</h1>
+
+      <p class="header-sub">Submit structured clinical data for predicting chances of Colorectal Cancer.</p>
+    </header>
+
+    <form class="form-card" action="/predict" method="POST">
+
+      <!-- 01 Location -->
+      <div class="form-section">
+        <span class="section-label">01 — Location</span>
+        <div class="field-group">
+          <label for="country" class="field-label">Country</label>
+          <div class="input-wrapper">
+            <input
+              type="text"
+              id="Country"
+              name="country"
+              class="field-input"
+              placeholder="e.g. France"
+              autocomplete="off"
+              required
+            />
+            <span class="input-icon">🌍</span>
+          </div>
+          <span class="field-hint">Enter the country name as a string</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 02 Patient Info -->
+      <div class="form-section">
+        <span class="section-label">02 — Patient Info</span>
+        <div class="field-group">
+          <label for="age" class="field-label">Age</label>
+          <div class="input-wrapper">
+            <input
+              type="number"
+              id="Age"
+              name="age"
+              class="field-input"
+              placeholder="e.g. 45"
+              min="0"
+              max="130"
+              step="1"
+              required
+            />
+            <span class="input-icon">🧬</span>
+          </div>
+          <span class="field-hint">Integer value in years</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 03 Clinical Measurements -->
+      <div class="form-section">
+        <span class="section-label">03 — Clinical Measurements</span>
+        <div class="two-col">
+          <div class="field-group">
+            <label for="tumor_size" class="field-label">Tumor Size (mm)</label>
+            <div class="input-wrapper">
+              <input
+                type="number"
+                id="Tumor_size"
+                name="Tumor_Size_mm"
+                class="field-input"
+                placeholder="e.g. 23"
+                min="0"
+                step="1"
+                required
+              />
+              <span class="input-icon">📐</span>
+            </div>
+            <span class="field-hint">Integer value in millimetres</span>
+          </div>
+
+          <div class="field-group">
+            <label for="incidence_rate" class="field-label">Incidence Rate (per 100K)  </label>
+            <div class="input-wrapper">
+              <input
+                type="number"
+                id="Incidence_rate"
+                name="Incidence_Rate_per_100K"
+                class="field-input"
+                placeholder="e.g. 32"
+                min="0"
+                step="1"
+                required
+              />
+              <span class="input-icon">📊</span>
+            </div>
+            <span class="field-hint">Represents the number of new cases occurring per 100,000 people in a population over a given timeframe (typically one year).
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 04 Economic Data -->
+      <div class="form-section">
+        <span class="section-label">04 — Economic Data</span>
+        <div class="field-group">
+          <label for="healthcare_costs" class="field-label">Healthcare Costs INR</label>
+          <div class="input-wrapper">
+            <input
+              type="number"
+              id="Healthcare_costs"
+              name="Healthcare_Costs"
+              class="field-input"
+              placeholder="e.g. 48000"
+              min="0"
+              step="1"
+              required
+            />
+            <span class="input-icon">💵</span>
+          </div>
+          <span class="field-hint">Integer value in Rupees</span>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button type="reset" class="btn-reset">Clear</button>
+        <button type="submit" class="btn-submit">
+          <span>Predict</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+    </form>
+    {% if predication is not none %}
+      {% if predication == 1 %}
+          <h3>Prediction: Yes</h3>
+      {% else %}
+          <h3>Prediction: No</h3>
+      {% endif %}
+    {% endif %}
+
+  </div>
+
+</body>
+</html>

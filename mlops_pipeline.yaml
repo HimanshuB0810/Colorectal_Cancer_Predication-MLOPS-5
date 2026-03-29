@@ -1,0 +1,70 @@
+# PIPELINE DEFINITION
+# Name: mlops-pipeline
+# Description: This is my first ever KubeFlow Pipeline
+components:
+  comp-data-processing-op:
+    executorLabel: exec-data-processing-op
+    outputDefinitions:
+      artifacts:
+        processed_data:
+          artifactType:
+            schemaTitle: system.Dataset
+            schemaVersion: 0.0.1
+  comp-model-training-op:
+    executorLabel: exec-model-training-op
+    inputDefinitions:
+      artifacts:
+        processed_data:
+          artifactType:
+            schemaTitle: system.Dataset
+            schemaVersion: 0.0.1
+deploymentSpec:
+  executors:
+    exec-data-processing-op:
+      container:
+        args:
+        - --output_path
+        - '{{$.outputs.artifacts[''processed_data''].path}}'
+        command:
+        - python
+        - src/data_processing.py
+        image: himanshu863/my-mlops-app:latest
+    exec-model-training-op:
+      container:
+        args:
+        - --input_path
+        - '{{$.inputs.artifacts[''processed_data''].path}}'
+        command:
+        - python
+        - src/model_training.py
+        image: himanshu863/my-mlops-app:latest
+pipelineInfo:
+  description: This is my first ever KubeFlow Pipeline
+  name: mlops-pipeline
+root:
+  dag:
+    tasks:
+      data-processing-op:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-data-processing-op
+        taskInfo:
+          name: data-processing-op
+      model-training-op:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-model-training-op
+        dependentTasks:
+        - data-processing-op
+        inputs:
+          artifacts:
+            processed_data:
+              taskOutputArtifact:
+                outputArtifactKey: processed_data
+                producerTask: data-processing-op
+        taskInfo:
+          name: model-training-op
+schemaVersion: 2.1.0
+sdkVersion: kfp-2.16.0

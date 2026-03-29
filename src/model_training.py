@@ -82,7 +82,13 @@ class ModelTraining:
         self.train_model()
         self.evaluate_model()
 
+import argparse
+
 if __name__=="__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--input_path", type=str)
+    args = parser.parse_args()
+
     with mlflow.start_run():
-        model_train=ModelTraining()
+        model_train = ModelTraining(processed_data_path=args.input_path)
         model_train.run()
